@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Builder</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="toolbar-container">
+      <div class="brand-group">
+        <div class="brand-logo" aria-hidden="true">DB</div>
+        <div>
+          <h1 class="brand-title">Дашборд Андрея</h1>
+        </div>
+        <span id="widgetCounterBadge" class="widget-counter-badge" aria-live="polite">
+          Виджетов: 0
+        </span>
+      </div>
+
+      <nav class="toolbar-actions" aria-label="Панель управления">
+        <button type="button" id="btnAddWidget" class="btn btn-primary">
+          + Добавить виджет
+        </button>
+        <button type="button" id="btnResetDashboard" class="btn btn-danger-outline">
+          Сбросить дашборд
+        </button>
+        <button type="button" id="btnThemeToggle" class="btn btn-secondary" aria-label="Переключить тему">
+          Тема: Светлая
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <section id="emptyState" class="empty-state" hidden aria-label="Дашборд пуст">
+      <div class="empty-state-icon" aria-hidden="true">📊</div>
+      <h2>Пока нет ни одного виджета</h2>
+      <p>Добавьте заметку, счётчик, список задач или график, чтобы собрать свой дашборд.</p>
+      <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <button type="button" id="btnEmptyAddFirst" class="btn btn-primary">
+          + Добавить первый виджет
+        </button>
+        <button type="button" id="btnRestoreDemo" class="btn btn-secondary">
+          Заполнить примерами
+        </button>
+      </div>
+    </section>
+
+    <section id="dashboardGrid" class="dashboard-grid" aria-label="Сетка виджетов"></section>
+  </main>
+
+  <!-- Модалка добавления виджета -->
+  <div id="modalAddWidget" class="modal-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="modalAddTitle">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modalAddTitle">Новый виджет</h3>
+        <button type="button" class="icon-btn" data-close-modal aria-label="Закрыть">✕</button>
+      </div>
+      <form id="formAddWidget" novalidate>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="inputWidgetTitle" class="form-label">Заголовок *</label>
+            <input
+              type="text"
+              id="inputWidgetTitle"
+              class="input-field"
+              placeholder="Введите название..."
+              maxlength="60"
+              required
+            >
+            <span id="errorWidgetTitle" class="form-error" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <span class="form-label" id="labelWidgetType">Тип виджета</span>
+            <div class="widget-type-grid" role="radiogroup" aria-labelledby="labelWidgetType">
+              <label class="type-radio-card selected" data-type-card="note">
+                <input type="radio" name="widgetType" value="note" checked>
+                <span class="type-radio-title">📝 Заметка</span>
+                <span class="type-radio-desc">Текст с редактированием по даблклику</span>
+              </label>
+
+              <label class="type-radio-card" data-type-card="counter">
+                <input type="radio" name="widgetType" value="counter">
+                <span class="type-radio-title">🔢 Счётчик</span>
+                <span class="type-radio-desc">Кнопки + / - и шаг</span>
+              </label>
+
+              <label class="type-radio-card" data-type-card="todo">
+                <input type="radio" name="widgetType" value="todo">
+                <span class="type-radio-title">✅ Список задач</span>
+                <span class="type-radio-desc">Чек-лист с удалением</span>
+              </label>
+
+              <label class="type-radio-card" data-type-card="chart">
+                <input type="radio" name="widgetType" value="chart">
+                <span class="type-radio-title">📊 График</span>
+                <span class="type-radio-desc">Столбчатая диаграмма на Canvas</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal>Отмена</button>
+          <button type="submit" class="btn btn-primary">Добавить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Модалка подтверждения сброса -->
+  <div id="modalConfirmReset" class="modal-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="modalResetTitle">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modalResetTitle">Сбросить дашборд?</h3>
+        <button type="button" class="icon-btn" data-close-modal aria-label="Закрыть">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>Все добавленные виджеты и их настройки будут удалены.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-close-modal>Отмена</button>
+        <button type="button" id="btnConfirmResetYes" class="btn btn-danger">Удалить всё</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
